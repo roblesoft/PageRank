@@ -18,8 +18,8 @@ def main():
     print(matriz_de_adyacencia)
  
     for key, value in word_wide_web.items():
-        pagina = open(path + value + '.html', 'r')
-        pag = open(path + value + '.html', 'r')
+        pagina = open(path + "www." + value + '.com.html', 'r')
+        pag = open(path + "www." + value + '.com.html', 'r')
         links = 0
         print("pagina {}".format(value))
         for linea in pagina:
@@ -42,6 +42,7 @@ def main():
             print("| {:.2f} |\t ".format(col), end="")
 
     print("")
+    return matriz_de_adyacencia
 
 
 if __name__ == "__main__":
