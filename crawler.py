@@ -2,9 +2,8 @@ import re
 import os
 from indexer import indexer
 
-path = './world wide web/'
-
-def main():
+def crawler():
+    path = './world wide web/'
     word_wide_web = indexer('./world wide web')
     print(word_wide_web)
 
@@ -43,7 +42,3 @@ def main():
 
     print("")
     return matriz_de_adyacencia
-
-
-if __name__ == "__main__":
-    main()
