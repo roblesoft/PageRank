@@ -3,7 +3,7 @@ def indexer(path):
     import os
     directorio = os.listdir(path)
     paginas = [pagina[4:-9] for pagina in directorio]
-    word_wide_web = {}
+    world_wide_web = {}
     for index in range(len(paginas)):
-        word_wide_web[index] = paginas[index]
-    return word_wide_web
+        world_wide_web[index] = paginas[index]
+    return world_wide_web

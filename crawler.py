@@ -4,11 +4,11 @@ from indexer import indexer
 
 def crawler():
     path = './world wide web/'
-    word_wide_web = indexer('./world wide web')
+    world_wide_web = indexer('./world wide web')
 
-    matriz_de_transicion = [ [0 for j in range(len(word_wide_web))] for page in word_wide_web.keys()]
+    matriz_de_transicion = [ [0 for j in range(len(world_wide_web))] for page in world_wide_web.keys()]
  
-    for key, value in word_wide_web.items():
+    for key, value in world_wide_web.items():
         pagina = open(path + "www." + value + '.com.html', 'r')
         pag = open(path + "www." + value + '.com.html', 'r')
         links = 0
@@ -21,7 +21,7 @@ def crawler():
                 for encontrado in re.finditer('www.([a-zA-Z]+).com', linea):
                     sub_cadena = list(encontrado.span())
                     direccion = (linea[sub_cadena[0]:sub_cadena[1]])[4: -4]
-                    lookup = {value: key for key, value in word_wide_web.items()}
+                    lookup = {value: key for key, value in world_wide_web.items()}
                     matriz_de_transicion[lookup[direccion]][key]= 1/links
     for row in matriz_de_transicion:
         print("\n")
@@ -29,4 +29,4 @@ def crawler():
             print("| {:.2f} |\t ".format(col), end="")
 
     print("")
-    return matriz_de_transicion
+    return matriz_de_transicion, world_wide_web

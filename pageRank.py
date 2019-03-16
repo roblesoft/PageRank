@@ -21,7 +21,6 @@ def pageRank(matriz):
             pesos_nuevos.append(reduce(lambda x, y: x + y, matriz_resultado[i]))
         return pesos_nuevos
 
-    exponente_de_la_matriz = 1
     def checkUmbral(pesos_inicio, pesos_finales, exp=1):
         success = 0
         for valor in range(len(pesos_iniciales)):
@@ -36,7 +35,6 @@ def pageRank(matriz):
             return checkUmbral(pesos_ini, pesos_finales, exp)
         return pesos_ini
 
-
     pesos_finales = sistema_dinamico(matriz, pesos_iniciales)
-    pesos = checkUmbral(pesos_iniciales, pesos_finales, exponente_de_la_matriz)
+    pesos = checkUmbral(pesos_iniciales, pesos_finales, 1)
     return pesos
