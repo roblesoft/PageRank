@@ -46,10 +46,22 @@ def pageRank(matriz):
         for hilo in lista_hilos:
             hilo.start()
 
+        divisor = len(mat)
+        inicio = 0
+        hilos = 3
+        lista_hilos = list()
         pesos_nuevos = []
-        for i in range(len(matriz)):
-            pesos_nuevos.append(reduce(lambda x, y: x + y, matriz_resultado[i]))
-        #hilo1 = Thread(target=sumfilas, args=(pesos_nuevos, matriz_resultado, 0, 9))
+        for hilo in range(0, hilos):
+            partes = int(len(mat) / hilos)
+            if divisor % hilos != 0:
+                partes += 1
+                divisor -= 1
+            final = (inicio + int(partes))
+            hilo = Thread(target=sumfilas, args=(pesos_nuevos, matriz_resultado, inicio, final))
+            inicio = final
+            hilo.start()
+            
+       
         #hilo2 = Thread(target=sumfilas, args=(pesos_nuevos, matriz_resultado, 9, 17))
         #hilo1.start()
         #hilo2.start()
@@ -63,12 +75,13 @@ def pageRank(matriz):
         success = 0
         for valor in range(len(pesos_iniciales)):
             umbral = fabs(pesos_finales[valor] - pesos_inicio[valor])
-            if  umbral >= 0.0 and umbral <= 0.01:
+            if  umbral >= 0.0 and umbral <= 0.001:
                 success += 1
 
         hilo_de_pesos_ini = ThreadReturn(target=sistema_dinamico, args=(matriz, pesos_iniciales, exp), name='pesos_ini')
         hilo_de_pesos_ini.start()
         #pesos_ini = sistema_dinamico(matriz, pesos_iniciales, exp)
+
 
         if success != len(pesos_finales):
             exp += 1
