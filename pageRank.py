@@ -8,7 +8,8 @@ def pageRank(matriz):
     import time
     import queue
     from threading import Thread
-    tiempo_inicio = time.time()
+    import threading
+
     pesos_iniciales = [1/(len(matriz)) for pagina in range(len(matriz))]
     def arreglo(resultado, pesos, mat, inicio, fin):
         for i in range(inicio, fin):
@@ -16,6 +17,9 @@ def pageRank(matriz):
             for j in range(len(mat)):
                 fila.append(pesos[i] * mat[i][j])
             resultado.append(fila)
+    def sumfilas(mat, matresul, ini, fin):
+        for i in range(ini, fin):
+            mat.append(reduce(lambda x, y: x + y, matresul[i]))
 
     def sistema_dinamico(mat, pesos, exponente=1):
         array = np.array(mat)
@@ -26,14 +30,33 @@ def pageRank(matriz):
         #    for j in range(len(mat)):
         #        fila.append(pesos[i] * mat[i][j])
         #    matriz_resultado.append(fila)
-        #tercio = int(len(mat) / 3)
-        primer_hilo = Thread(target=arreglo, args=(matriz_resultado, pesos, mat, 0, int(len(mat) / 2)))
-        segundo_hilo = Thread(target=arreglo, args=(matriz_resultado, pesos, mat, int(len(mat)/ 2), len(mat)))
-        primer_hilo.start()
-        segundo_hilo.start()
+        divisor = len(mat)
+        inicio = 0
+        hilos = 1
+        lista_hilos = list()
+        for hilo in range(0, hilos):
+            partes = int(len(mat) / hilos)
+            if divisor % hilos != 0:
+                partes += 1
+                divisor -= 1
+            final = (inicio + int(partes))
+            thread = Thread(target=arreglo, args=(matriz_resultado, pesos, mat, inicio, final))
+            inicio = final
+            lista_hilos.append(thread)
+        for hilo in lista_hilos:
+            hilo.start()
+
         pesos_nuevos = []
         for i in range(len(matriz)):
             pesos_nuevos.append(reduce(lambda x, y: x + y, matriz_resultado[i]))
+        #hilo1 = Thread(target=sumfilas, args=(pesos_nuevos, matriz_resultado, 0, 9))
+        #hilo2 = Thread(target=sumfilas, args=(pesos_nuevos, matriz_resultado, 9, 17))
+        #hilo1.start()
+        #hilo2.start()
+        #hilo1.join()
+        #hilo2.join()
+        #for hilo in hilos:
+        #    hilo.join()
         return pesos_nuevos
 
     def checkUmbral(pesos_inicio, pesos_finales, exp=1):
@@ -62,6 +85,4 @@ def pageRank(matriz):
 
     pesos_finales = sistema_dinamico(matriz, pesos_iniciales)
     pesos = checkUmbral(pesos_iniciales, pesos_finales, 1)
-    tiempo_final = time.time()
-    print(tiempo_final - tiempo_inicio)
     return pesos
