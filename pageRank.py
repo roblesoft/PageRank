@@ -26,12 +26,11 @@ def pageRank(matriz):
         #    for j in range(len(mat)):
         #        fila.append(pesos[i] * mat[i][j])
         #    matriz_resultado.append(fila)
+        #tercio = int(len(mat) / 3)
         primer_hilo = Thread(target=arreglo, args=(matriz_resultado, pesos, mat, 0, int(len(mat) / 2)))
         segundo_hilo = Thread(target=arreglo, args=(matriz_resultado, pesos, mat, int(len(mat)/ 2), len(mat)))
         primer_hilo.start()
         segundo_hilo.start()
-        primer_hilo.join()
-        segundo_hilo.join()
         pesos_nuevos = []
         for i in range(len(matriz)):
             pesos_nuevos.append(reduce(lambda x, y: x + y, matriz_resultado[i]))
