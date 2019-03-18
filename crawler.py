@@ -15,7 +15,6 @@ def crawler():
         for linea in pagina:
             if re.findall('www.([a-zA-Z]+).com', linea):
                 links += 1
-        print("numero de links {} en {} ".format(links, value))
         for linea in pag:
             if re.findall('www.([a-zA-Z]+).com', linea):
                 for encontrado in re.finditer('www.([a-zA-Z]+).com', linea):
@@ -23,10 +22,10 @@ def crawler():
                     direccion = (linea[sub_cadena[0]:sub_cadena[1]])[4: -4]
                     lookup = {value: key for key, value in world_wide_web.items()}
                     matriz_de_transicion[lookup[direccion]][key]= 1/links
-    for row in matriz_de_transicion:
-        print("\n")
-        for col in row:
-            print("| {:.2f} |\t ".format(col), end="")
+    #for row in matriz_de_transicion:
+    #    print("\n")
+    #    for col in row:
+    #        print("| {:.2f} |\t ".format(col), end="")
 
-    print("")
+    #print("")
     return matriz_de_transicion, world_wide_web
