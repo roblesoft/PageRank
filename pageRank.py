@@ -32,7 +32,7 @@ def pageRank(matriz):
         #    matriz_resultado.append(fila)
         divisor = len(mat)
         inicio = 0
-        hilos = 1
+        hilos = 3
         lista_hilos = list()
         for hilo in range(0, hilos):
             partes = int(len(mat) / hilos)
@@ -66,20 +66,20 @@ def pageRank(matriz):
             if  umbral >= 0.0 and umbral <= 0.01:
                 success += 1
 
-        #hilo_de_pesos_ini = ThreadReturn(target=sistema_dinamico, args=(matriz, pesos_iniciales, exp), name='pesos_ini')
-        #hilo_de_pesos_ini.start()
-        pesos_ini = sistema_dinamico(matriz, pesos_iniciales, exp)
+        hilo_de_pesos_ini = ThreadReturn(target=sistema_dinamico, args=(matriz, pesos_iniciales, exp), name='pesos_ini')
+        hilo_de_pesos_ini.start()
+        #pesos_ini = sistema_dinamico(matriz, pesos_iniciales, exp)
 
         if success != len(pesos_finales):
             exp += 1
-        #    hilos_de_pesos_finales = ThreadReturn(target=sistema_dinamico, args=(matriz, pesos_iniciales, exp), name='pesos_fin')
-        #    hilos_de_pesos_finales.start()
-        #    pesos_finales = hilos_de_pesos_finales.join()
-        #    pesos_ini = hilo_de_pesos_ini.join()
-            pesos_finales = sistema_dinamico(matriz, pesos_iniciales, exp)
+            hilos_de_pesos_finales = ThreadReturn(target=sistema_dinamico, args=(matriz, pesos_iniciales, exp), name='pesos_fin')
+            hilos_de_pesos_finales.start()
+            pesos_finales = hilos_de_pesos_finales.join()
+            pesos_ini = hilo_de_pesos_ini.join()
+        #    pesos_finales = sistema_dinamico(matriz, pesos_iniciales, exp)
             return checkUmbral(pesos_ini, pesos_finales, exp)
         else:  
-        #    pesos_ini = hilo_de_pesos_ini.join()
+            pesos_ini = hilo_de_pesos_ini.join()
             return pesos_ini
 
 
